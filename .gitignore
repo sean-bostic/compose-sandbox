@@ -1,0 +1,6 @@
+/androidApp/build/
+/.kotlin/
+/.idea/
+/build/
+/shared/build/
+/.gradle/
