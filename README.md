@@ -17,19 +17,5 @@ fun XrpPriceCardPumpingPreview() {
   }
 }
 ```
-┌─────────────────────────────────────┐
-│  androidApp/                        │
-│  ├── ProductPreviews.kt             │  ← ONLY for previewing
-│  ├── DashboardPreviews.kt           │  ← Best to be opened in Android Studio to get Compose Preview
-│  └── ...Previews.kt                 │  ← @Preview annotations
-└─────────────────────────────────────┘
-│
-│ imports from
-↓
-┌─────────────────────────────────────┐
-│  shared/                            │
-│  ├── ProductComponents.kt           │  ← Works on all platforms
-│  ├── ProductMocks.kt                │  ← iOS, Android, Desktop
-│  ├── DashboardComponents.kt         │  ← Pure Compose
-│  └── ...                            │  ← No platform specific code
-└─────────────────────────────────────┘
+
+<img width="795" height="360" alt="image" src="https://github.com/user-attachments/assets/2bcda34b-f880-42f9-8f2e-c7abfc627dec" />
