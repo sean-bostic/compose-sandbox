@@ -4,3 +4,4 @@
 /build/
 /shared/build/
 /.gradle/
+/local.properties

@@ -58,7 +58,7 @@ fun XrpPriceCard(data: XrpSummary) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                "$${data.priceUsd.formatDecimal(4)}",
+                "$${data.priceUsd.formatDecimal(2)}",
                 style = MaterialTheme.typography.displayLarge.copy(
                     fontWeight = FontWeight.Bold,
                     fontSize = 48.sp
@@ -103,44 +103,27 @@ fun TrendDisplay(changePercent: Double) {
     val emojiString = emoji.repeat(emojiCount)
 
     val pumpDumpMessage = if (emojiCount > 0) {
-        if (changePercent > 0) "Pump Status" else "Dump Status"
+        if (changePercent > 0) "Pump Status: " else "Dump Status:"
     } else {
         "24h Trend"
     }
 
-    val trendEmoji = if (changePercent > 0) "📈" else "📉"
-    val trendText = if (changePercent > 0) "UP" else "DOWN"
     val trendColor = if (changePercent > 0) Color(0xFF10b981) else Color(0xFFef4444)
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            pumpDumpMessage,
-            style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
+
 
         Spacer(modifier = Modifier.height(8.dp))
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
+            horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            Text(
-                trendEmoji,
-                fontSize = 24.sp
-            )
 
             Spacer(modifier = Modifier.width(8.dp))
 
-            Text(
-                trendText,
-                style = MaterialTheme.typography.titleLarge.copy(
-                    fontWeight = FontWeight.Bold
-                ),
-                color = trendColor
-            )
 
             Spacer(modifier = Modifier.width(8.dp))
 
@@ -155,10 +138,18 @@ fun TrendDisplay(changePercent: Double) {
 
         if (emojiString.isNotEmpty()) {
             Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                emojiString,
-                fontSize = 32.sp
-            )
+            Row {
+                Text(
+                    pumpDumpMessage,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Text(
+                    emojiString,
+                    fontSize = 32.sp
+                )
+            }
+
         }
     }
 }
