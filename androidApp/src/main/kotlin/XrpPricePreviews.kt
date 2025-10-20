@@ -5,13 +5,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import xrp_price_tracker.MockData
 import xrp_price_tracker.TrendDisplay
-import xrp_price_tracker.XrpPriceCard
+import xrp_price_tracker.XrpDataCard
 
 @Preview(name = "Pumping 🚀🚀", showBackground = true)
 @Composable
 fun XrpPriceCardPumpingPreview() {
     MaterialTheme {
-        XrpPriceCard(MockData.pumpingXrp)
+        XrpDataCard(MockData.pumpingXrp)
     }
 }
 
@@ -19,7 +19,7 @@ fun XrpPriceCardPumpingPreview() {
 @Composable
 fun XrpPriceCardDumpingPreview() {
     MaterialTheme {
-        XrpPriceCard(MockData.dumpingXrp)
+        XrpDataCard(MockData.dumpingXrp)
     }
 }
 
@@ -27,7 +27,7 @@ fun XrpPriceCardDumpingPreview() {
 @Composable
 fun XrpPriceCardNeutralPreview() {
     MaterialTheme {
-        XrpPriceCard(MockData.neutralXrp)
+        XrpDataCard(MockData.neutralXrp)
     }
 }
 
