@@ -11,12 +11,12 @@ data class XrpSummary(
 
 object MockData {
     val pumpingXrp = XrpSummary(
-        priceUsd = 2.54,
+        priceUsd = 22.23,
         priceChangePercentage24h = 15.0,
-        marketCapUsd = 140_000_000_000,
-        volume24hUsd = 8_000_000_000,
-        high24hUsd = 2.59,
-        low24hUsd = 2.40
+        marketCapUsd = 500_000_000_000,
+        volume24hUsd = 38_000_000_000,
+        high24hUsd = 22.59,
+        low24hUsd = 21.40
     )
 
     val dumpingXrp = XrpSummary(

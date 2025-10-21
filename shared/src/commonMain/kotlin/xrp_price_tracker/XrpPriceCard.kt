@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -28,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlin.math.*
@@ -56,17 +58,51 @@ fun formatLargeNumber(num: Long): String {
 @Composable
 fun XrpDataCard(data: XrpSummary) {
     val changePercent = data.priceChangePercentage24h
-    val trendColor = if (changePercent > 0) Color(0xFF10b981) else Color(0xFFef4444)
+    val trendColor = if (changePercent > 0) Color(0xFF10b981) else Color.Red // TODO: The Color.Green looks like alien piss so figure out
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
     ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(5.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.Top
+        ){
+            Text(
+                text="XRP",
+                fontWeight = FontWeight.ExtraBold
+            )
+            Box(
+                modifier = Modifier
+                    .background(
+                        color = trendColor.copy(alpha = 0.1f),
+                        shape = RoundedCornerShape(8.dp)
+                    )
+                    .border(
+                        width = 2.dp,
+                        color = trendColor,
+                        shape = RoundedCornerShape(8.dp)
+                    )
+                    .padding(horizontal = 12.dp, vertical = 6.dp)
+            ) {
+                Text(
+                    "${if (changePercent > 0) "+" else ""}${changePercent.formatDecimal(2)}%",
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        fontWeight = FontWeight.ExtraBold,
+                        fontSize = 16.sp
+                    ),
+                    color = trendColor
+                )
+            }
+        }
         Column(
             modifier = Modifier
-                .padding(24.dp)
+                .padding(10.dp)
                 .fillMaxWidth()
         ) {
             Row(
@@ -74,17 +110,31 @@ fun XrpDataCard(data: XrpSummary) {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.Top
             ) {
-                Text(
-                    "$${data.priceUsd.formatDecimal(2)}",
-                    style = MaterialTheme.typography.displayLarge.copy(
-                        fontWeight = FontWeight.ExtraBold,
-                        fontSize = 90.sp
-                    ),
-                    color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.weight(1f),
-                    maxLines = 1,
-                    softWrap = false
-                )
+                BoxWithConstraints(
+                    modifier = Modifier.weight(1f)
+                ) {
+                    val priceText = "$${data.priceUsd.formatDecimal(2)}"
+
+                    val fontSize = when {
+                        priceText.length <= 5 -> 90.sp  // $1.23 (5 chars)
+                        priceText.length <= 6 -> 75.sp  // $12.34 (6 chars)
+                        priceText.length <= 7 -> 65.sp  // $123.45 (7 chars)
+                        priceText.length <= 8 -> 55.sp  // $1234.56 (8 chars)
+                        else -> 45.sp                   // $12345.67+ (9+ chars)
+                    }
+
+                    Text(
+                        priceText,
+                        style = MaterialTheme.typography.labelLarge.copy(
+                            fontWeight = FontWeight.ExtraBold,
+                            fontSize = fontSize
+                        ),
+                        color = MaterialTheme.colorScheme.primary,
+                        maxLines = 1,
+                        softWrap = false,
+                        overflow = TextOverflow.Visible
+                    )
+                }
 
                 Spacer(modifier = Modifier.width(16.dp))
 
@@ -92,41 +142,21 @@ fun XrpDataCard(data: XrpSummary) {
                     horizontalAlignment = Alignment.End,
                     verticalArrangement = Arrangement.Top
                 ) {
-                    Box(
-                        modifier = Modifier
-                            .background(
-                                color = trendColor.copy(alpha = 0.1f),
-                                shape = RoundedCornerShape(8.dp)
-                            )
-                            .border(
-                                width = 2.dp,
-                                color = trendColor,
-                                shape = RoundedCornerShape(8.dp)
-                            )
-                            .padding(horizontal = 12.dp, vertical = 6.dp)
-                    ) {
-                        Text(
-                            "${if (changePercent > 0) "+" else ""}${changePercent.formatDecimal(2)}%",
-                            style = MaterialTheme.typography.bodyMedium.copy(
-                                fontWeight = FontWeight.ExtraBold,
-                            ),
-                            color = trendColor
-                        )
-                    }
 
-                    Spacer(modifier = Modifier.height(12.dp))
+                    Spacer(modifier = Modifier.height(20.dp))
 
                     Row {
                         Icon(
                             imageVector = Icons.Default.KeyboardArrowUp,
                             contentDescription = "High",
-                            tint = Color(0xFF10b981),
+                            tint = Color.Green,
                             modifier = Modifier.size(16.dp)
                         )
                         Text(
-                            "$${data.high24hUsd.formatDecimal(4)}",
+                            "$${data.high24hUsd.formatDecimal(3)}",
                             style = MaterialTheme.typography.bodyMedium.copy(
-                                fontWeight = FontWeight.SemiBold
+                                fontWeight = FontWeight.SemiBold,
+                                fontSize = 16.sp
                             )
                         )
                     }
@@ -134,19 +164,21 @@ fun XrpDataCard(data: XrpSummary) {
                     Row {
                         Icon(
                             imageVector = Icons.Default.KeyboardArrowDown,
-                            contentDescription = "High",
-                            tint = Color(0xFF10b981),
+                            contentDescription = "Low",
+                            tint = Color.Red,
                             modifier = Modifier.size(16.dp)
                         )
                         Text(
-                            "$${data.low24hUsd.formatDecimal(4)}",
+                            "$${data.low24hUsd.formatDecimal(3)}",
                             style = MaterialTheme.typography.bodyMedium.copy(
-                                fontWeight = FontWeight.SemiBold
+                                fontWeight = FontWeight.SemiBold,
+                                fontSize = 16.sp
                             )
                         )
                     }
                 }
             }
+            Spacer(modifier = Modifier.height(16.dp))
 
             HorizontalDivider()
 
@@ -161,6 +193,7 @@ fun XrpDataCard(data: XrpSummary) {
                     value = formatLargeNumber(data.marketCapUsd),
                     modifier = Modifier.weight(1f)
                 )
+
                 VerticalDivider(modifier = Modifier.height(100.dp))
 
                 StatItem(
