@@ -34,6 +34,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlin.math.*
 
+val defaultColor = Color(
+    red = 100,
+    green = 160,
+    blue = 250,
+    alpha = 255
+)
+
 fun Double.formatDecimal(decimals: Int): String {
     val multiplier = 10.0.pow(decimals)
     val rounded = round(this * multiplier) / multiplier
@@ -58,13 +65,15 @@ fun formatLargeNumber(num: Long): String {
 @Composable
 fun XrpDataCard(data: XrpSummary) {
     val changePercent = data.priceChangePercentage24h
-    val trendColor = if (changePercent > 0) Color(0xFF10b981) else Color.Red // TODO: The Color.Green looks like alien piss so figure out
-
+    val trendColor = if (changePercent > 0) Color.Green else Color.Red
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color.Black
+        )
     ) {
         Row(
             modifier = Modifier
@@ -75,7 +84,9 @@ fun XrpDataCard(data: XrpSummary) {
         ){
             Text(
                 text="XRP",
-                fontWeight = FontWeight.ExtraBold
+                fontWeight = FontWeight.ExtraBold,
+                color = defaultColor,
+                modifier = Modifier.padding(6.dp)
             )
             Box(
                 modifier = Modifier
@@ -129,7 +140,7 @@ fun XrpDataCard(data: XrpSummary) {
                             fontWeight = FontWeight.ExtraBold,
                             fontSize = fontSize
                         ),
-                        color = MaterialTheme.colorScheme.primary,
+                        color = defaultColor,
                         maxLines = 1,
                         softWrap = false,
                         overflow = TextOverflow.Visible
@@ -157,7 +168,8 @@ fun XrpDataCard(data: XrpSummary) {
                             style = MaterialTheme.typography.bodyMedium.copy(
                                 fontWeight = FontWeight.SemiBold,
                                 fontSize = 16.sp
-                            )
+                            ),
+                            color = defaultColor
                         )
                     }
 
@@ -173,7 +185,8 @@ fun XrpDataCard(data: XrpSummary) {
                             style = MaterialTheme.typography.bodyMedium.copy(
                                 fontWeight = FontWeight.SemiBold,
                                 fontSize = 16.sp
-                            )
+                            ),
+                            color = defaultColor
                         )
                     }
                 }
@@ -202,53 +215,19 @@ fun XrpDataCard(data: XrpSummary) {
                     modifier = Modifier.weight(1f)
                 )
             }
-        }
-    }
-}
-
-@Composable
-fun TrendDisplay(changePercent: Double) {
-    val emojiCount = (abs(changePercent) / 5.0).toInt()
-    val emoji = if (changePercent > 0) "🚀" else "💩"
-    val emojiString = emoji.repeat(emojiCount)
-
-    val trendColor = if (changePercent > 0) Color(0xFF10b981) else Color(0xFFef4444)
-
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-
-            Spacer(modifier = Modifier.width(8.dp))
-
-
-            Spacer(modifier = Modifier.width(8.dp))
-
-            Text(
-                "${if (changePercent > 0) "+" else ""}${changePercent.formatDecimal(2)}%",
-                style = MaterialTheme.typography.titleLarge.copy(
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp
-                ),
-                color = trendColor
-            )
-        }
-
-        if (emojiString.isNotEmpty()) {
-            Spacer(modifier = Modifier.height(8.dp))
-            Row {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start
+            ) {
                 Text(
-                    emojiString,
-                    fontSize = 32.sp
+                    text = "Last updated 8 min, 25 sec ago..",
+                    color = defaultColor,
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 10.sp
+                    ),
                 )
             }
-
         }
     }
 }
@@ -266,7 +245,7 @@ fun StatItem(
         Text(
             label,
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = defaultColor
         )
 
         Spacer(modifier = Modifier.height(4.dp))
@@ -275,7 +254,8 @@ fun StatItem(
             value,
             style = MaterialTheme.typography.bodyLarge.copy(
                 fontWeight = FontWeight.SemiBold
-            )
+            ),
+            color = defaultColor
         )
     }
 }
