@@ -199,24 +199,21 @@ fun XrpDataCard(data: XrpSummary) {
 
             HorizontalDivider()
 
-            Spacer(modifier = Modifier.height(24.dp))
-
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
+                horizontalArrangement = Arrangement.SpaceAround,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 StatItem(
                     label = "Market Cap",
-                    value = formatLargeNumber(data.marketCapUsd),
-                    modifier = Modifier.weight(1f)
+                    value = formatLargeNumber(data.marketCapUsd)
                 )
 
                 VerticalDivider(modifier = Modifier.height(100.dp))
 
                 StatItem(
                     label = "24h Volume",
-                    value = formatLargeNumber(data.volume24hUsd),
-                    modifier = Modifier.weight(1f)
+                    value = formatLargeNumber(data.volume24hUsd)
                 )
             }
             HorizontalDivider()
